@@ -1,0 +1,407 @@
+<h3>Plugin overview</h3>
+
+<p>
+The NP_LMCommentModerstor plugin is for comment moderation. 
+It will let you keep commenting open for all, while you will still have full control over which comments that get posted to the blog. 
+Unregistered commenters will have the possibility to edit their comments for one hour.
+</p>
+
+<p>
+The plugin includes a simple spam filter which let you whitelist or blacklist on member, ip, email address or website. 
+In addition to that it have a spam filter API, that supports additional plugins for spam check.
+</p>
+
+<p>
+The current skin and template variables in the Nucleus core for showing comments 
+does not have the possibility to have plugins filter the comments shown.
+Because of this the NP_LMCommentModerstor plugin uses a helper plugin for handling comment filtering. 
+This plugin is called NP_LMReplacementVars and gives alternative implementations of some key Nucleus core skin variables.
+It must be installed before the NP_LMCommentModerstor plugin can be installed. 
+The NP_LMReplacementVars plugin can be downloaded from the NP_LMReplacementVars <a href="http://nucleus.slightlysome.net/plugins/lmreplacementvars">plugin page</a>.
+</p>
+
+<h3>Installation</h3>
+
+<ul>
+<li>
+Upload the <code>NP_LMCommentModerstor.php</code> file and the <code>lmcommentmoderator</code> directory 
+from the zip file to the Nucleus CMS plugins directory (<code>nucleus/plugins</code>) on your web server.
+</li>
+<li>
+Go to the Plugins page in the admin area. You should be able to select the plugin in the dropdown list under the 
+"Install New Plugin" section and press the "Install Plugin" button.
+</li>
+</ul>
+
+<h3>Upgrade</h3>
+
+<ul>
+<li>
+Take a backup of the current plugin files. You will need these if you want to rollback to the previous version after the upgrade.
+</li>
+<li>
+Take a backup of the database used for you Nucleus installation.
+</li>
+<li>
+Replace the old plugin files with the new ones. Do not uninstall the plugin.
+</li>
+<li>
+If a plugin data upgrade is needed, will an upgrade plugin data option be 
+available on the NP_LMCommentModerator plugin admin page. Choose this option to upgrade the plugin data.
+</li>
+<li>
+After the plugin data upgrade has been performed may a rollback option and a commit option be available on the NP_LMCommentModerator 
+plugin admin page. Not all upgrades support the rollback and commit option.
+</li>
+<li>
+If you are not pleased with the new version of the plugin you may use the rollback option to rollback the plugin data upgrade. 
+After the rollback of the plugin data upgrade you have to replace the new plugin files with the old plugin files.
+</li>
+<li>
+If you are pleased with the new version of the plugin you should use the commit option to commit the plugin data upgrade. 
+After the commit of the plugin data upgrade will any rollback and commit options disappear.
+</li>
+</ul>
+
+
+<h3>Configuration</h3>
+
+<p>
+The NP_LMCommentModerstor plugin has the following options on the blog level:
+</p>
+
+<ul>
+<li>
+<b>Delete NP_LMCommentModerator data tables on uninstall?</b> - Should the plugin data be deleted un uninstall?
+</li>
+<li>
+<b>Spam check test modus?</b> - Set the plugin spam check in test modus. 
+If the word <code>Ham</code> is in the comment body, will the comment be categorized as Ham.
+If the word <code>Spam</code> is in the comment body, will the comment be categorized as Spam.
+</li>
+<li>
+<b>Spam check member comments?</b> - Should comments by members be spam checked?
+</li>
+<li>
+<b>Enable member filter?</b> - Enable member whitelist/blacklist.
+</li>
+<li>
+<b>Enable IP filter?</b> - Enable IP whitelist/blacklist.
+</li>
+<li>
+<b>Enable Email filter?</b> - Enable EMail whitelist/blacklist.
+</li>
+<li>
+<b>Enable Website filter?</b> - Enable Website whitelist/blacklist. 
+</li>
+<li>
+<b>Email address for admin notification</b> - Email address to use for notification to the comment moderator.
+</li>
+<li>
+<b>Send notification on new Ham comments?</b> - Should the plugin send a notification message when new comments are classified as Ham.
+</li>
+<li>
+<b>Send notification on comments added to the moderation queue?</b> - Should the plugin send a notification message when comments are added to the moderation queue.
+</li>
+<li>
+<b>Send notification on new Spam comments?</b> - Should the plugin send a notification message when new comments are classified as Spam.
+</li>
+<li>
+<b>Purge Spam comments after X days</b> - How many days to keep spam comments before they are purged. If 0 will spam comments be kept forever.
+</li>
+<li>
+<b>Generate Bootstrap HTML?</b> - Generate Bootstrap HTML for form input. Set to yes if your site uses Bootstrap.
+</li>
+</ul>
+
+<h3>Usage</h3>
+
+<p>
+After the plugin is installed and configured you need to change your skin to use the the NP_LMReplacementVars skin and template variables 
+as described in the "NP_LMReplacementVars" section of this help document.
+</p>
+
+<p>
+Usually you should be able to use the default comment form templates provided by the NP_LMCommentModerator plugin. 
+If you want to use customized version see the "Comment form templates" section of this help document. 
+</p>
+
+<p>
+The NP_LMCommentModerator plugin have some comment related template variables. 
+These are "ModCategory", "CommentActions" and "CookieWarning". 
+Each of these are described in individual sections in the help document.
+You should update the template used on your item page to include these template variables. 
+</p>
+
+<p>
+The plugin admin page will show any comments waiting for manual moderation. 
+Blog admins are comment moderators, and can moderate comments on the blog they are admin for.
+</p>
+
+<p>
+A guide describing how to set up the skin and templates of a Nucleus CMS installation to use the 
+NP_LMCommentModerator plugin can be found <a href="http://nucleus.slightlysome.net/blog/how-to-set-up-nucleus-to-use-the-lmcommentmoderator-plugin">here</a>.
+</p>
+
+<h3>Moderation Category</h3>
+
+<p>
+The NP_LMCommentModerator plugin will add a moderation category property to comments.
+The available moderation categories are:
+</p>
+ 
+<ul>
+<li>
+<b>Ham</b> - The comment has been categorized as <code>Ham</code> by either a spam filter of by a comment moderator. 
+<code>Ham</code> comments will be shown to all.
+When a comment moderator categorizes a comment as <code>Ham</code> will spam filters that supports updating be updated. 
+</li>
+<li>
+<b>Spam</b> - The comment has been categorized as <code>Spam</code> by either a spam filter of by a comment moderator. 
+<code>Spam</code> comments will only be shown to the comment author.
+When a comment moderator categorizes a comment as <code>Spam</code> will spam filters that supports updating be updated. 
+</li>
+<li>
+<b>Show</b> - The comment has been categorized as <code>Show</code> by a comment moderator.
+The comment will be shown to all.
+When the NP_LMCommentModerator plugin is installed will all existing comments be but in this category.
+</li>
+<li>
+<b>Hide</b> - The comment has been categorized as <code>Hide</code> by a comment moderator.
+The comment will only be shown to the comment author.
+</li>
+<li>
+<b>Manual Moderation</b> - New comments that the spam filter can't categorize as either <code>Ham</code> or <code>Spam</code> 
+is categorized as <code>Manual Moderation</code>.
+<code>Manual Moderation</code> comments will be shown to the comment author and the comment moderators. 
+</li>
+<li>
+<b>Members Only</b> - The comment has been categorized as <code>Members Only</code> by a comment moderator. 
+The comment will only be shown to logged in members.
+</li>
+</ul> 
+
+<p>
+When a comment moderator edit a comment can the moderation category of the comment be updated.
+</p>
+
+<p>
+The comment sections of the Nucleus CMS admin area will show all comments regardless of moderation category. 
+Plugins that handle comments and that not explicitly support the will NP_LMCommentModerator plugin will disregard moderation category. 
+These plugins will need an update to support moderation category.
+</p>
+
+<h3>Spam filtering</h3>
+
+<p>
+The NP_LMCommentModerator plugin implements a modified subset of the <a href="http://wakka.xiffy.nl/spamcheck_api">Nucleus CMS SpamCheck API</a>.
+A description of the NP_LMCommentModerator SpamCheck API is linked from the the NP_LMCommentModerator plugin admin page or it can be found 
+<a href="http://nucleus.slightlysome.net/blog/lmcommentmoderator-spamcheck-api-description">here</a>.
+</p>
+
+<p>
+A simple whitelist/blacklist spam filter for IP, member, email and website comment attributes is included in the NP_LMCommentModerator plugin. 
+This spam filter is administered from the NP_LMCommentModerator plugin admin page. 
+If a comment attribute matches the filter value, will the comment get the filter category value. 
+The spam filter is automatically updated when a comment moderator sets the moderation category of a comment to <code>Ham</code> or <code>Spam</code>.
+</p>
+
+<p>
+In addition to the built in spam filter are two additional spam check plugins implementing the 
+NP_LMCommentModerator SpamCheck API released by the NP_LMCommentModerator plugin author.
+These spam check plugins are <a href="http://nucleus.slightlysome.net/plugins/lmstopforumspam">NP_LMStopForumSpam</a> 
+and <a href="http://nucleus.slightlysome.net/plugins/lmspambotbehavior">NP_LMSpamBotBehavior</a>.
+</p>
+
+<p>
+The order of the spam check plugins in the Nucleus CMS admin plugin list is the order the spam checks are executed. 
+It is recommended to keep any spam check plugins bellow the NP_LMCommentModerator plugin in the Nucleus CMS admin plugin list.
+</p>
+
+<h3>Plugin administration page</h3>
+
+<p>
+The NP_LMCommentModerator plugin administration page has two main sections. 
+One section for handling comments, and one section for administration of the built in spam filter.
+</p>
+
+<h4>Show comments</h4>
+
+<p>
+In the show comments section you can list all comments with moderation category <code>Manual Moderation</code>, <code>Spam</code> or <code>Hide</code>. 
+Actions can be performed single comments or on all comments in the list.
+Available actions are:
+</p>
+
+<ul>
+<li>
+<b>Edit</b> - Edit comment.
+</li>
+<li>
+<b>Show</b> - Move comment to the <code>Show</code> moderation category.
+</li>
+<li>
+<b>Hide</b> - Move comment to the <code>Hide</code> moderation category.
+</li>
+<li>
+<b>Ham</b> - Move comment to the <code>Ham</code> moderation category, and update spam filters.
+</li>
+<li>
+<b>Spam</b> - Move comment to the <code>Spam</code> moderation category, and update spam filters.
+</li>
+</ul>
+
+<h4>Show filter content</h4>
+
+<p>
+In the show filter section you can list the content of the member, email, website or IP filter. 
+Actions can be performed on single filters in the list.
+Available actions are:
+</p>
+
+<ul>
+<li>
+<b>Ham</b> - Sets the moderation category for the filter to <code>Ham</code>. 
+Spam checked comments matching the filter value will have its moderation category set to <code>Ham</code>.
+</li>
+<li>
+<b>Spam</b> - Sets the moderation category for the filter to <code>Spam</code>. 
+Spam checked comments matching the filter value will have its moderation category set to <code>Spam</code>.
+</li>
+<li>
+<b>Moderate</b> - Sets the moderation category for the filter to <code>Manual Moderation</code>. 
+Spam checked comments matching the filter value will have its moderation category set to <code>Manual Moderation</code>.
+</li>
+<li>
+<b>Lock</b> - Locks the filter. The moderation category for the filter can not be updated by a comment 
+moderator manually setting the comment category to <code>Spam</code> or <code>Ham</code> for a matching comment. 
+</li>
+<li>
+<b>Unlock</b> - Unlocks the filter. The moderation category for the filter can not be updated by a comment 
+moderator manually setting the comment category to <code>Spam</code> or <code>Ham</code> for a matching comment. 
+</li>
+<li>
+<b>Disable</b> - Disables the filter. Disabled filters will be ignored during spam check.
+</li>
+<li>
+<b>Enable</b> - Enables the filter. 
+</li>
+<li>
+<b>Delete</b> - Deletes the filter.
+</li>
+</ul>
+
+<h3>Comment form templates</h3>
+
+<p>
+The NP_LMCommentModerator plugin adds some new comment form templates and uses modified versions of existing ones. 
+These comment form templates are "Comment Loggedin Form", "Comment Not Loggedin Form", "Comment Loggedin Edit Form", 
+"Comment Not Loggedin Edit Form" and "Comment Can Not Edit Form". 
+The default contents of these templates can be displayed from the plugin admin page.
+</p>
+
+<p>
+Do not edit the comment form template files provided in the NP_LMCommentModerator plugin directory. 
+These files will be overwritten when you upgrade the plugin.
+If you need to override the default comment form template provided by the plugin this should be 
+done in the NP_LMCommentModerator section of a Nucleus template.
+To utilize a comment form template in a Nucleus template, 
+add the Nucleus template name to the CommentForm skin variable like this 
+<code>&lt;%LMReplacementVars(CommentForm,mytemplate/item)%&gt;</code>.
+</p>
+
+<h3>ModCategory</h3>
+
+<p>
+Template variable used to insert the text associated with the moderation category of a comment. It is used in the comment part of a nucleus template. 
+The text associated with each moderation category can be set in the <b>ModCategory</b> fields in the nucleus template given as parameter. 
+If the template field for an moderation category is empty will the default value for the moderation category be used instead. 
+The default value for each moderation category can be displayed from the plugin admin page.
+</p>
+
+<pre>
+&lt;%LMCommentModerator(ModCategory,lm/item)%&gt;
+</pre>
+
+<p>The parameters are:</p>
+<ul>
+<li><b>template</b> - Name of the Nucleus template to use. If blank will only default values be used.</li>
+</ul>
+
+<h3>CommentActions</h3>
+
+<p>
+Template variable used to insert the available comment actions for a comment. It is used in the comment part of a nucleus template.
+</p>
+
+<pre>
+&lt;%LMCommentModerator(CommentActions)%&gt;
+</pre>
+
+<h3>CookieWarning</h3>
+
+<p>
+Template variable used to insert the cookie warning for a comment. It is used in the comment part of a nucleus template.
+The cookie warning will be shown to non-members on the latest comment they made, if the comment can be edited.
+
+The text for the cookie warning can be set in the <b>Cookie Warning</b> field in the nucleus template given as parameter. 
+If the template field for the cookie warning is empty will the default value be used insted. 
+The default value for the cookie warning can be displayed from the plugin admin page.
+</p>
+
+<pre>
+&lt;%LMCommentModerator(CookieWarning,lm/item)%&gt;
+</pre>
+
+<p>The parameters are:</p>
+<ul>
+<li><b>template</b> - Name of the Nucleus template to use. If blank will only the default value be used.</li>
+</ul>
+
+<h3>NP_LMReplacementVars</h3>
+
+<p>
+The replacement skin and template variables for <code>&lt;%archive()%&gt;</code>, <code>&lt;%blog()%&gt;</code>, 
+<code>&lt;%commentform()%&gt;</code>, <code>&lt;%comments()%&gt;</code> and <code>&lt;%item()%&gt;</code>
+in the NP_LMReplacementVars plugin must be used by your blog if you want this plugin to function. 
+See the documentation for the NP_LMReplacementVars plugin for further information on how to use the comments and comment form replacement skin variables.
+</p>
+
+<h3>Support and Bug reports</h3>
+
+<p>
+For additional support and/or bug reports please use the Nucleus forum 
+<a href="http://forum.nucleuscms.org/viewtopic.php?t=21302">plugin announce thread</a> 
+or the <a href="http://nucleus.slightlysome.net/plugins/lmcommentmoderator">plugin page</a> comment section.
+</p>
+
+
+<h3>Compability</h3>
+
+<p>
+This version of the NP_LMCommentModerstor plugin is tested against version 3.66 of LMNucleus CMS. 
+The minimum version of Nucleus CMS needed for using this plugin is 3.60.
+</p>
+<p> 
+The minimum version of the NP_LMReplacementVars plugin needed by this plugin is version 1.1.0. 
+</p>
+
+
+<h3>Version History</h3>
+
+<ul>
+<li><b>v1.0.0 2014-04-13:</b> by Leo (http://nucleus.slightlysome.net/leo)</li>
+<ul>
+<li>Initial release.</li>
+</ul>
+</ul>
+
+<h3>Download</h3>
+
+<p>
+<a href="http://nucleus.slightlysome.net/files/NP_LMCommentModerator_v100.zip" title="Download NP_LMCommentModerator_v100.zip">Download NP_LMCommentModerator v1.0.0</a>.
+The latest version of the NP_LMCommentModerator plugin can be downloaded from the NP_LMCommentModerator <a href="http://nucleus.slightlysome.net/plugins/lmcommentmoderator">plugin page</a>.
+</p>
+<p> 
+The latest version of the NP_LMReplacementVars plugin can be downloaded from the NP_LMReplacementVars <a href="http://nucleus.slightlysome.net/plugins/lmreplacementvars">plugin page</a>.
+</p>

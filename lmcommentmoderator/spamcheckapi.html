@@ -1,0 +1,119 @@
+<h3>NP_LMCommentModerator SpamCheck API overview</h3>
+
+<p>
+The NP_LMCommentModerator SpamCheck API makes it possible to extend the comment spam handling abilities of the 
+<a href="http://nucleus.slightlysome.net/plugins/lmcommentmoderator">NP_LMCommentModerator</a> plugin 
+by creating Nucleus plugins that subscribe to the spam check events triggered by the NP_LMCommentModerator plugin.
+</p>
+
+<p>
+The NP_LMCommentModerator plugin implements a modified subset of the <a href="http://wakka.xiffy.nl/spamcheck_api">Nucleus CMS SpamCheck API</a>. 
+The reason for using a modified version is that the Nucleus CMS SpamCheck API data structures are missing some 
+data that is needed by the spam handling in the NP_LMCommentModerator plugin. 
+</p>
+
+<p>
+A spam check plugin can categorize a comment in 3 different categories:
+</p>
+
+<ul>
+<li><b>Spam</b> - Comments that the spam check plugin is certain are spam is categorized as <code>Spam</code>.
+<li><b>Ham</b> - Comments that the spam check plugin is certain are genuine comments is categorized as <code>Ham</code>.
+<li><b>Undecided</b> - Comments that the spam check plugin can't categorize as <code>Ham</code> or <code>Spam</code> is categorized as <code>Undecided</code>.
+</ul>
+
+<h3>The LMCommentModerator_SpamCheck event</h3>
+
+<p>
+Spam check plugins must implement and subscribe to the <code>LMCommentModerator_SpamCheck</code> event. 
+The <code>$data</code> parameter for this event contains a <code>spamcheck</code> member.
+It is an associated array which contain data that can be used by the spam check plugin. The members of this associated array are:
+</p>
+
+<ul>
+<li><b>type</b> - Will always be <code>comment</code>. 
+</li>
+<li><b>commentid</b> - The <code>commentid</code> of the comment to be spam checked.
+</li>
+<li><b>itemid</b> - The <code>itemid</code> of the item the comment to be spam checked belongs to.
+</li>
+<li><b>memberid</b> - The <code>memberid</code> of the member posting the comment. Will be <code>false</code> if the author is not a member.
+</li>
+<li><b>body</b> - The raw body of the comment to be spam checked.
+</li>
+<li><b>author</b> - The name of the comment author.
+</li>
+<li><b>email</b> - The email address of the comment author. 
+</li>
+<li><b>url</b> - The URL to the website of the comment author.
+</li>
+<li><b>ip</b> - The IP-address that was used to post the comment.
+</li>
+<li><b>result</b> - The result of the spam check is returned here. 
+Set to <code>H</code> if the spam plugin categorize the comment as <code>Ham</code>. 
+Set to <code>S</code> if the spam plugin categorize the comment as <code>Spam</code>.
+Do not update this attribute if the spam plugin classifies the comment as <code>Undecided</code>.
+ </li>
+<li><b>plugin</b> - If the <code>result</code> is set, is the name of the spam check plugin returned here.
+</li>
+<li><b>message</b> - If the <code>result</code> is set, is a reason for the categorization returned here.
+</li>
+</ul>
+
+<p>
+If the <code>result</code> attribute is already set in the <code>spamcheck</code> array when the event is 
+triggered in a spam check plugin must the spam check plugin ignore the spam check and return without updating any result attributes.
+</p>
+
+<p>
+If no spam check plugins categorize the comment as <code>Ham</code> or <code>Spam</code>, will the NP_LMCommentModerator plugin 
+assign the <code>Manual Moderation</code> category the comment.
+</p>
+
+<p>
+For an example of how to implement this event, see the NP_LMCommentModerator plugin. 
+It uses this event to spam check comments against the filters used by the NP_LMCommentModerator plugin.
+</p>
+
+
+<h3>The LMCommentModerator_SpamMark event</h3>
+
+<p>
+Spam check plugins can implement and subscribe to the <code>LMCommentModerator_SpamMark</code> event if they 
+want to be notified when a comment moderator categorizes a comment as <code>Spam</code> or <code>Ham</code>.
+The purpose for this event is for spam check plugins to be able to learn from the categorizing done by comment moderators.
+</p>
+
+<p>
+The <code>$data</code> parameter for this event contains a <code>spammark</code> member.
+It is an associated array which contain data that can be used by the spam check plugin. The members of this associated array are:
+</p>
+
+<ul>
+<li><b>type</b> - Will always be <code>comment</code>. 
+</li>
+<li><b>commentid</b> - The <code>commentid</code> of the comment.
+</li>
+<li><b>itemid</b> - The <code>itemid</code> of the item the comment.
+</li>
+<li><b>memberid</b> - The <code>memberid</code> of the member posting the comment. Will be <code>false</code> if the author is not a member.
+</li>
+<li><b>body</b> - The raw body of the comment.
+</li>
+<li><b>author</b> - The name of the comment author.
+</li>
+<li><b>email</b> - The email address of the comment author. 
+</li>
+<li><b>url</b> - The URL to the website of the comment author.
+</li>
+<li><b>ip</b> - The IP-address that was used to post the comment.
+</li>
+<li><b>result</b> - If the comment has been categorized as <code>Ham</code> is it set to <code>H</code>.
+If the comment has been categorized as <code>Spam</code> is it set to <code>S</code>.
+ </li>
+</ul>
+
+<p>
+For an example of how to implement this event, see the NP_LMCommentModerator plugin. 
+It uses this event to update the filters used by the NP_LMCommentModerator plugin.
+</p>

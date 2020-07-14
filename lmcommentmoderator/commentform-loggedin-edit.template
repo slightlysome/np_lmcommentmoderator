@@ -1,0 +1,17 @@
+<form id="nucleus_cf" method="post" action="#nucleus_cf">
+<div class="commentform">
+<input type="hidden" name="action" value="plugin" />
+<input type="hidden" name="name" value="lmcommentmoderator" />
+<input type="hidden" name="type" value="editcomment" />
+<input type="hidden" name="editcommentid" value="<%formdata(commentid)%>" />
+<input type="hidden" name="ticket" value="<%formdata(ticket)%>" />
+		<%errordiv%>
+
+		<label for="nucleus_cf_body">Edit Comment: (<a href="<%formdata(commenturl)%>" title="Cancel edit">Cancel</a>)</label>
+		<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body"><%formdata(body)%></textarea>
+
+		<%callback(FormExtra,commentform-loggedin)%>
+
+		<input type="submit" alt="Edit comment" value="Edit comment" class="formbutton" />
+	</div>
+</form>
